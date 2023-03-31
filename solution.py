@@ -9,8 +9,9 @@ chat_id = 975846018 # Ваш chat ID, не меняйте название пе�
 def solution(p: float, x: np.array) -> tuple:
     n = len(x)
     alpha = 1 - p
-    df = 2 * n
-    loc = np.sqrt(np.mean(x ** 2) / 2)
-    scale = np.sqrt(chi2.ppf(1 - alpha / 2, df) / (2 * n)) - \
-            np.sqrt(chi2.ppf(alpha / 2, df) / (2 * n))
-    return loc - scale, loc + scale
+    chi2_alpha_2 = chi2.ppf(alpha / 2, df=n - 1)
+    chi2_1_minus_alpha_2 = chi2.ppf(1 - alpha / 2, df=n - 1)
+    s2 = np.var(x, ddof=1)
+    left = (n - 1) * s2 / chi2_1_minus_alpha_2
+    right = (n - 1) * s2 / chi2_alpha_2
+    return np.sqrt(left / 45), np.sqrt(right / 45)
