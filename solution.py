@@ -8,8 +8,8 @@ chat_id = 975846018 # Ваш chat ID, не меняйте название пе�
 
 def solution(p: float, x: np.array) -> tuple:
     n = len(x)
-    s_squared = np.mean(x**2) / 0.45
-    alpha = 1 - p
-    left = (n - 1) * s_squared / chi2.ppf(1 - alpha/2, n - 1)
-    right = (n - 1) * s_squared / chi2.ppf(alpha/2, n - 1)
-    return (left, right)
+    s2 = np.mean(x**2) / 0.45
+    c = chi2.ppf((1 + p)/2, 2*n)
+    left = np.sqrt((2*n*s2)/c) / 0.45
+    right = np.sqrt((2*n*s2)/chi2.ppf((1 - p)/2, 2*n)) / 0.45
+    return left**0.1, right**0.1
